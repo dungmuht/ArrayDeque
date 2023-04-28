@@ -47,8 +47,8 @@ int lShift(Deque* dq, int value) { // value = 3
     return 0;
 }
 int rShift(Deque* dq, int value) { // value = 3
-    if (value>=0) {
-        printf("value must be negative\n");
+    if (value<=0) {
+        printf("value must be positive\n");
     } else if (dq->bLast + value <= dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
         int i;
         for (i=dq->bLast-1; i>=0; i--) { // i -> 4 ~ 0
@@ -165,6 +165,8 @@ void main() {
     for (int i=0; i<deque1->size/2; i++) {
         insertRear(deque1, '0'+i);
     }
+    insertFront(deque1, 'z');
+    insertRear(deque1, 'Z');
     printdq(deque1);
     free(deque1->fData);
     free(deque1->bData);
