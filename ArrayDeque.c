@@ -25,7 +25,9 @@ int isDeQEmpty(Deque dq) {
     }
 }
 int lShift(Deque* dq, int value) { // value = 3
-    if (dq->fLast+value < dq->size/2) { // fLast = 4 <= dq->size/2 = 50
+    if (value<=0) {
+        printf("value must be positive\n");
+    } else if (dq->fLast+value <= dq->size/2) { // fLast = 4 <= dq->size/2 = 50
         int i;
         for (i=dq->fLast-1; i>=0; i--) { // i -> 3 ~ 0
             dq->fData[i+value] = dq->fData[i]; // fData[6 ~ 3] = fData[3~0]
@@ -41,11 +43,13 @@ int lShift(Deque* dq, int value) { // value = 3
         return 1;
     } else {
         printf("LeftDeque is almost full\n");
-        return 0;
     }
+    return 0;
 }
 int rShift(Deque* dq, int value) { // value = 3
-    if (dq->bLast + value < dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
+    if (value>=0) {
+        printf("value must be negative\n");
+    } else if (dq->bLast + value <= dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
         int i;
         for (i=dq->bLast-1; i>=0; i--) { // i -> 4 ~ 0
             dq->bData[i+value] = dq->bData[i];  // bData[7 ~ 3] = bData[4~0]
@@ -61,8 +65,8 @@ int rShift(Deque* dq, int value) { // value = 3
         return 1;
     } else {
         printf("RightDeque is almost full\n");
-        return 0;
     }
+    return 0;
 }
 void insertFront(Deque* dq, char item) {
     if (isDeQEmpty(*dq)) {
@@ -84,7 +88,7 @@ void insertRear(Deque* dq, char item) {
     if (dq->bLast < dq->size/2 + dq->size%2) {
         dq->bData[dq->bLast] = item;
         dq->bLast += 1;
-    } else if (lShift(dq, (dq->bLast - dq->fLast)/2)) {
+    } else if (lShift(dq, (dq->bLast - dq->fLast)/2 + (dq->bLast - dq->fLast)%2)) {
         dq->bData[dq->bLast] = item;
         dq->bLast += 1;
     } else {
@@ -98,7 +102,9 @@ char deleteFront(Deque* dq) {
         return;
     } else if (dq->fLast != 0) {
         dq->fLast -= 1;
+        return dq->fData[dq->fLast];
     } else {
+        char tmp = dq->bData[0];
         int i = 1;
         for (; i <= dq->bLast/2 + dq->bLast%2; i++) {
             dq->fData[dq->bLast/2-i] = dq->bData[i]; 
@@ -108,6 +114,7 @@ char deleteFront(Deque* dq) {
         }
         dq->bLast /= 2;
         dq->fLast = dq->bLast + dq->bLast%2;
+        return tmp;
     }
 }
 char deleteRear(Deque* dq) {
@@ -116,7 +123,9 @@ char deleteRear(Deque* dq) {
         return;
     } else if (dq->bLast != 0) {
         dq->bLast -= 1;
+        return dq->bData[dq->bLast];
     } else { // 012345
+        char tmp = dq->fData[0];
         int i = 1;
         for (; i < dq->fLast/2 + dq->fLast%2; i++) { // i < 3 ->  1, 2
             dq->bData[dq->fLast/2-i] = dq->fData[i]; // 2-i -> 1, 0
@@ -126,6 +135,7 @@ char deleteRear(Deque* dq) {
         }
         dq->fLast /= 2;
         dq->bLast = dq->fLast + dq->bLast%2;
+        return tmp;
     }
 }
 char peekFront(Deque* dq) {
@@ -152,13 +162,10 @@ void main() {
         insertFront(deque1, 'a'+i);
         printdq(deque1);
     }
-    //for (int i=0; i<deque1->size/2; i++) {
-    //    insertRear(deque1, '0'+i);
-    //
-    insertRear(deque1, '0' + 0);
-    insertRear(deque1, '0' + 1);
-    insertRear(deque1, '0' + 2);
-    insertRear(deque1, '0' + 3);
-    insertRear(deque1, '0' + 4);
+    for (int i=0; i<deque1->size/2; i++) {
+        insertRear(deque1, '0'+i);
+    }
     printdq(deque1);
+    free(deque1->fData);
+    free(deque1->bData);
 }
