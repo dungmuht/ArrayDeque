@@ -35,7 +35,7 @@ int lShift(Deque* dq, int value) { // value = 3
             dq->fData[i+value] = dq->bData[-i-1]; // fData[2~0] = bData[0~2]
         }
         dq->bLast -= value;
-        for (i=-i-1; i<dq->bLast; i++) { // i -> 3 ~ 5
+        for (i=0; i<dq->bLast; i++) { // i -> 3 ~ 5
             dq->bData[i] = dq->bData[i+value]; // bData[3~5] = bData[6~8]
         }
         return 1;
@@ -151,9 +151,13 @@ void main() {
     for (int i=0; i<deque1->size/2 + deque1->size%2; i++) {
         insertFront(deque1, 'a'+i);
     }
-    for (int i=0; i<deque1->size/2; i++) {
-        insertRear(deque1, '0'+i);
-    }
-    insertFront(deque1, 'z');
+    //for (int i=0; i<deque1->size/2; i++) {
+    //    insertRear(deque1, '0'+i);
+    //
+    insertRear(deque1, '0' + 0);
+    insertRear(deque1, '0' + 1);
+    insertRear(deque1, '0' + 2);
+    insertRear(deque1, '0' + 3);
+    insertRear(deque1, '0' + 4);
     printdq(deque1);
 }
