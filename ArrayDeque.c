@@ -64,7 +64,6 @@ int rShift(Deque* dq, int value) { // value = 3
         return 0;
     }
 }
-// insert 함수는 shift 함수를 사용하지 않음으로써 최적화 가능
 void insertFront(Deque* dq, char item) {
     if (isDeQEmpty(*dq)) {
         dq->bData[0] = item;
