@@ -1,4 +1,4 @@
-#include<stdio.h>
+    #include<stdio.h>
 #include <stdlib.h>
 typedef struct Deque {
     char* fData;
@@ -25,7 +25,7 @@ int isDeQEmpty(Deque dq) {
     }
 }
 int lShift(Deque* dq, int value) { // value = 3
-    if (dq->fLast+value < dq->size/2) { // fLast = 4 <= dq->size/2 = 50
+    if (dq->fLast+value <= dq->size/2) { // fLast = 4 <= dq->size/2 = 50
         int i;
         for (i=dq->fLast-1; i>=0; i--) { // i -> 3 ~ 0
             dq->fData[i+value] = dq->fData[i]; // fData[6 ~ 3] = fData[3~0]
@@ -45,25 +45,18 @@ int lShift(Deque* dq, int value) { // value = 3
     }
 }
 int rShift(Deque* dq, int value) { // value = 3
-    if (dq->bLast + value < dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
-        printf("bLast + value = %d, dq->size/2 + dq->size%%2 = %d\n", dq->bLast+value, dq->size/2 + dq->size%2);
+    if (dq->bLast + value <= dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
         int i;
         for (i=dq->bLast-1; i>=0; i--) { // i -> 4 ~ 0
             dq->bData[i+value] = dq->bData[i];  // bData[7 ~ 3] = bData[4~0]
-            printf("copy b(%d to %d)\n", i, i+value);
-            printdq(*dq);
         }
         dq->bLast += value;
         for (; i>=-value; i--) { // i -> -1 ~ -3
             dq->bData[i+value] = dq->fData[-i-1]; // bData[2~0] = fData[0~2]
-            printf("copy f(%d) to b(%d)\n", -i-1, i+value);
-            printdq(*dq);
         }
         dq->fLast -= value;
         for (i=0; i<dq->fLast; i++) { // i -> 3 ~ 5
             dq->fData[i] = dq->fData[i+value]; // fData[3~5] = fData[6~8]
-            printf("copy f(%d to %d)\n", i+value, i);
-            printdq(*dq);
         }
         return 1;
     } else {
@@ -156,27 +149,12 @@ void printdq(Deque* dq) {
 void main() {
     Deque deque = createDeque();
     Deque* deque1 = &deque;
-    insertFront(deque1, 'a');
-    insertFront(deque1, 'b');
-    insertFront(deque1, 'c');
-    insertFront(deque1, 'd');
-    insertFront(deque1, 'e');
-    insertFront(deque1, 'f');
-    insertFront(deque1, 'g');
-    insertFront(deque1, 'h');
-    insertFront(deque1, 'i');
-    insertFront(deque1, 'j');
-    printf("\n");
-    insertFront(deque1, 'k');
-    printf("\n");
-    insertFront(deque1, 'l');
-    printf("\n");
-    insertRear(deque1, 'm');
-    printf("\n");
-    insertFront(deque1, 'n');
-    for(int i=0; i<deque1->size; i++) {
-        insertFront(deque1, 'o');
+    for (int i=0; i<deque1->size/2 + deque1->size%2; i++) {
+        insertFront(deque1, 'a'+i);
     }
+    for (int i=0; i<deque1->size/2; i++) {
+        insertRear(deque1, '0'+i);
+    }
+    insertFront(deque1, 'z');
     printdq(deque1);
-    
 }
