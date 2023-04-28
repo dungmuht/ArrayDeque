@@ -25,7 +25,7 @@ int isDeQEmpty(Deque dq) {
     }
 }
 int lShift(Deque* dq, int value) { // value = 3
-    if (dq->fLast+value <= dq->size/2) { // fLast = 4 <= dq->size/2 = 50
+    if (dq->fLast+value < dq->size/2) { // fLast = 4 <= dq->size/2 = 50
         int i;
         for (i=dq->fLast-1; i>=0; i--) { // i -> 3 ~ 0
             dq->fData[i+value] = dq->fData[i]; // fData[6 ~ 3] = fData[3~0]
@@ -45,7 +45,7 @@ int lShift(Deque* dq, int value) { // value = 3
     }
 }
 int rShift(Deque* dq, int value) { // value = 3
-    if (dq->bLast + value <= dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
+    if (dq->bLast + value < dq->size/2 + dq->size%2) { // (bLast = 5) + (value = 3) <= (dq->size/2 = 50) + (dq->size%2 = 0)
         int i;
         for (i=dq->bLast-1; i>=0; i--) { // i -> 4 ~ 0
             dq->bData[i+value] = dq->bData[i];  // bData[7 ~ 3] = bData[4~0]
@@ -84,7 +84,7 @@ void insertRear(Deque* dq, char item) {
     if (dq->bLast < dq->size/2 + dq->size%2) {
         dq->bData[dq->bLast] = item;
         dq->bLast += 1;
-    } else if (lShift(dq, (dq->bLast - dq->fLast)/2 + (dq->bLast - dq->fLast)%2)) {
+    } else if (lShift(dq, (dq->bLast - dq->fLast)/2)) {
         dq->bData[dq->bLast] = item;
         dq->bLast += 1;
     } else {
@@ -150,6 +150,7 @@ void main() {
     Deque* deque1 = &deque;
     for (int i=0; i<deque1->size/2 + deque1->size%2; i++) {
         insertFront(deque1, 'a'+i);
+        printdq(deque1);
     }
     //for (int i=0; i<deque1->size/2; i++) {
     //    insertRear(deque1, '0'+i);
