@@ -149,7 +149,7 @@ void printdq(Deque* dq) {
     for (int i=dq->fLast-1; i>=0; i--) {
         printf("%c", dq->fData[i]);
     }
-    printf("|");
+    // printf("|");
     for (int i=0; i<dq->bLast; i++) {
         printf("%c", dq->bData[i]);
     }
